@@ -2,7 +2,8 @@
 #include <cmath>
 using namespace std;
 
-int f(double x, double tableau[], int degre)
+// Retourne la valeur de x
+double f(double x, double tableau[], int degre)
 {
 	int puissance = degre;
 	double resultat = 0;
@@ -16,48 +17,35 @@ int f(double x, double tableau[], int degre)
 
 int main()
 {
+/*****************************************************PARAMETRES*****************************************************/
+	// Degre du polynome
+	int degre = 5;
+	// Valeurs de chaque indice dans un tableau de taille degre+1
+	double tableau[] = {5, 6, 18, 12, 3, 1};
 
-	int degre;
-	cout << "Quel est le degre du polynome? : \n";
-	cin >> degre;
-	double tableau[degre+1];
+	// Bornes min et max
+	double borne1 = 0.0;
+	double borne2 = 5.0;
 
-
-	double valeur;
-	cout << "Entrez les differentes valeurs : \n";
-
-	for(int i=0; i<degre+1; i++)
-	{
-		cin >> valeur;
-		cout << "\n";
-		tableau[i] = valeur;
-	}
-
-	int borne1, borne2;
-	cout << "Entrez les deux bornes : \n";
-	cin >> borne1;
-	cout << "\n";
-	cin >> borne2;
-
+	// Nombre de divisions qui seront effectuees
+	// Définit la précision
 	const double DIVISIONS = 300000000;
+/********************************************************************************************************************/
+
+	double pas = ((double)(borne2 - borne1) / DIVISIONS);
 
 	double aire = 0;
-
-	/*for(double i=borne1; i<borne2; i+=DIVISIONS)
-	{
-		aire += (DIVISIONS)*((f(i, tableau, degre)+f(borne1+DIVISIONS, tableau, degre))/2);
-		cout << i << "\n";
-	}*/
-
 	double sigma = 0;
+
+	// Calcul de sigma
 	for(int i=1; i<DIVISIONS-1;i++)
 	{
-        sigma += f(((double)borne1+(double)i*((double)(borne2-borne1)/DIVISIONS)), tableau, degre);
+        sigma += f((borne1+i*pas), tableau, degre);
 	}
 
-	aire = ((double)(borne2 - borne1) / DIVISIONS) * (((f(borne1, tableau, degre) + f(borne2, tableau, degre))/2) + sigma);
-	cout << aire;
+	// Calcul de l'intégrale
+	aire = pas * (((f(borne1, tableau, degre) + f(borne2, tableau, degre))/2) + sigma);
+	cout << aire << endl;
 
 	return 0;
 }
-
